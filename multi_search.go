@@ -1,4 +1,4 @@
-package craigslist
+package craig
 
 import (
 	"errors"
