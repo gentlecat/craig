@@ -1,2 +1,5 @@
-test:
-	go test -v ./...
+fmt :
+	go fmt -x ./...
+
+test : fmt
+	go test ./... -bench .
