@@ -8,7 +8,7 @@ import (
 )
 
 func TestParseSites(t *testing.T) {
-	file, err := os.Open("./fixtures/home.html")
+	file, err := os.Open("./fixtures/sites.html")
 	if err != nil {
 		t.Error(err)
 	}
