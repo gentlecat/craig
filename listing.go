@@ -31,7 +31,7 @@ type Listing struct {
 	Title       string            `json:"title"`
 	Description string            `json:"description,omitempty"`
 	URL         string            `json:"url"`
-	Price       int               `json:"price"`
+	Price       uint              `json:"price"`
 	Images      []Image           `json:"images"`
 	Attributes  map[string]string `json:"attributes,omitempty"`
 	Location    *Location         `json:"location,omitempty"`
@@ -110,8 +110,8 @@ func parseDescription(doc *goquery.Document) string {
 	return strings.TrimSpace(block.Text())
 }
 
-func parsePrice(doc *goquery.Document) int {
-	var price int
+func parsePrice(doc *goquery.Document) uint {
+	var price uint
 	fmt.Sscanf(doc.Find(".postingtitletext > .price").Text(), "$%d", &price)
 	return price
 }

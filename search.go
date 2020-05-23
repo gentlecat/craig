@@ -70,8 +70,8 @@ func ParseSearchResults(reader io.Reader) (*SearchResults, error) {
 		title := s.Find(".result-title").First()
 		gallery := s.Find(".result-image").First().AttrOr("data-ids", "")
 		priceText := s.Find(".result-price").First().Text()
-		price := 0
 		images := []Image{}
+		var price uint
 
 		fmt.Sscanf(priceText, "$%d", &price)
 		if price < 0 {
