@@ -17,6 +17,7 @@ type SearchResults struct {
 }
 
 func Search(siteId string, opts SearchOptions) (*SearchResults, error) {
+
 	url := fmt.Sprintf("https://%s.craigslist.org/search/%s", siteId, opts.Category)
 
 	req, err := http.NewRequest(http.MethodGet, url, nil)
@@ -25,6 +26,22 @@ func Search(siteId string, opts SearchOptions) (*SearchResults, error) {
 	}
 
 	req.URL.RawQuery = opts.query().Encode()
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	return ParseSearchResults(resp.Body)
+}
+
+func SearchByURL(searchURL string) (*SearchResults, error) {
+
+	req, err := http.NewRequest(http.MethodGet, searchURL, nil)
+	if err != nil {
+		return nil, err
+	}
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
