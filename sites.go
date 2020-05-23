@@ -9,20 +9,20 @@ import (
 )
 
 var (
-	homeUrl = "https://www.craigslist.org/about/sites"
+	homeURL = "https://www.craigslist.org/about/sites"
 )
 
 type Site struct {
-	Id         string
+	ID         string
 	Name       string
-	RegionId   string
+	RegionID   string
 	RegionName string
 	URL        string
 }
 
 // Sites returns all US-based sites
 func Sites() ([]Site, error) {
-	resp, err := http.Get(homeUrl)
+	resp, err := http.Get(homeURL)
 	if err != nil {
 		return nil, err
 	}
@@ -40,19 +40,19 @@ func ParseSites(reader io.Reader) ([]Site, error) {
 
 	sites := []Site{}
 	boxes := doc.Find("div.colmask").First().Find("div.box")
-	lastRegionId := ""
+	lastRegionID := ""
 	lastReionName := ""
 
 	boxes.Each(func(i int, el *goquery.Selection) {
 		el.Children().Each(func(idx int, boxEl *goquery.Selection) {
 			if idx%2 == 0 {
-				lastRegionId = strings.ToLower(boxEl.Text())
+				lastRegionID = strings.ToLower(boxEl.Text())
 				lastReionName = strings.Title(strings.ToLower(boxEl.Text()))
 			} else {
 				boxEl.Find("li > a").Each(func(linkIdx int, linkEl *goquery.Selection) {
 					site := parseSiteLink(linkEl)
 					if site != nil {
-						site.RegionId = lastRegionId
+						site.RegionID = lastRegionID
 						site.RegionName = lastReionName
 						sites = append(sites, *site)
 					}
@@ -66,14 +66,14 @@ func ParseSites(reader io.Reader) ([]Site, error) {
 
 func parseSiteLink(link *goquery.Selection) *Site {
 	href := link.AttrOr("href", "")
-	matches := reSiteId.FindStringSubmatch(href)
+	matches := reSiteID.FindStringSubmatch(href)
 
 	if len(matches) == 0 {
 		return nil
 	}
 
 	return &Site{
-		Id:   matches[1],
+		ID:   matches[1],
 		Name: strings.Title(strings.ToLower(link.Text())),
 		URL:  strings.TrimRight(href, "/"),
 	}

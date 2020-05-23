@@ -34,7 +34,7 @@ func TestParseResults(t *testing.T) {
 	assert.Equal(t, 120, len(results.Listings))
 
 	listing := results.Listings[0]
-	assert.Equal(t, "6569794207", listing.Id)
+	assert.Equal(t, "6569794207", listing.ID)
 	assert.Equal(t, "2011 Porsche Cayenne Turbo", listing.Title)
 	assert.Equal(t, "https://chicago.craigslist.org/wcl/cto/d/2011-porsche-cayenne-turbo/6569794207.html", listing.URL)
 	assert.Empty(t, listing.Description)
