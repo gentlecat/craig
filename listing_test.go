@@ -24,7 +24,7 @@ func TestParseEmptyListing(t *testing.T) {
 	listing, err := ParseListing(file)
 	assert.NoError(t, err)
 	assert.NotNil(t, listing)
-	assert.Equal(t, "6569794207", listing.Id)
+	assert.Equal(t, "6569794207", listing.ID)
 }
 
 func TestParseListing(t *testing.T) {
@@ -37,7 +37,7 @@ func TestParseListing(t *testing.T) {
 	listing, err := ParseListing(file)
 	assert.NoError(t, err)
 	assert.NotNil(t, listing)
-	assert.Equal(t, "6520962081", listing.Id)
+	assert.Equal(t, "6520962081", listing.ID)
 	assert.Equal(t, "2014 PORSCHE PANAMERA", listing.Title)
 	assert.Equal(t, "https://chicago.craigslist.org/sox/cto/d/2014-porsche-panamera/6520962081.html", listing.URL)
 	assert.NotEmpty(t, listing.Description)

@@ -63,18 +63,18 @@ func ParseSearchResults(reader io.Reader) (*SearchResults, error) {
 
 		if gallery != "" {
 			for _, str := range strings.Split(gallery, ",") {
-				imageId := strings.Split(str, ":")[1]
+				imageID := strings.Split(str, ":")[1]
 
 				images = append(images, Image{
-					Small:  fmt.Sprintf("https://images.craigslist.org/%s_300x300.jpg", imageId),
-					Medium: fmt.Sprintf("https://images.craigslist.org/%s_600x450.jpg", imageId),
-					Large:  fmt.Sprintf("https://images.craigslist.org/%s_1200x900.jpg", imageId),
+					Small:  fmt.Sprintf("https://images.craigslist.org/%s_300x300.jpg", imageID),
+					Medium: fmt.Sprintf("https://images.craigslist.org/%s_600x450.jpg", imageID),
+					Large:  fmt.Sprintf("https://images.craigslist.org/%s_1200x900.jpg", imageID),
 				})
 			}
 		}
 
 		listing := Listing{
-			Id:     s.AttrOr("data-pid", ""),
+			ID:     s.AttrOr("data-pid", ""),
 			Title:  title.Text(),
 			URL:    title.AttrOr("href", ""),
 			Price:  price,

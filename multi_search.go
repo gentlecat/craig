@@ -17,7 +17,7 @@ func MultiSearch(sites []string, opts SearchOptions) (map[string]*SearchResults,
 	wg := sync.WaitGroup{}
 	wg.Add(len(sites))
 
-	for _, siteId := range sites {
+	for _, siteID := range sites {
 		go func(id string) {
 			defer wg.Done()
 
@@ -30,7 +30,7 @@ func MultiSearch(sites []string, opts SearchOptions) (map[string]*SearchResults,
 			lock.Lock()
 			res[id] = results
 			lock.Unlock()
-		}(siteId)
+		}(siteID)
 	}
 
 	wg.Wait()

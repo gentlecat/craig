@@ -15,8 +15,8 @@ import (
 )
 
 var (
-	reSiteId     = regexp.MustCompile(`https://(.*).craigslist.org`)
-	reListingId  = regexp.MustCompile(`([\d]+).html`)
+	reSiteID     = regexp.MustCompile(`https://(.*).craigslist.org`)
+	reListingID  = regexp.MustCompile(`([\d]+).html`)
 	reAttributes = regexp.MustCompile(`^(.+):\s?(.*)`)
 	reImage      = regexp.MustCompile(`images.craigslist.org\/(.*)_[\d]+x[\d]+.jpg`)
 
@@ -27,19 +27,19 @@ var (
 )
 
 type Listing struct {
-	Id          string            `json:"id"`
+	ID          string            `json:"id"`
 	Title       string            `json:"title"`
 	Description string            `json:"description,omitempty"`
 	URL         string            `json:"url"`
 	Price       int               `json:"price"`
 	Images      []Image           `json:"images"`
 	Attributes  map[string]string `json:"attributes,omitempty"`
-	Location    *LatLng           `json:"location,omitempty"`
+	Location    *Location         `json:"location,omitempty"`
 	PostedAt    *time.Time        `json:"posted_at,omitempty"`
 	UpdatedAt   *time.Time        `json:"updated_at,omitempty"`
 }
 
-type LatLng struct {
+type Location struct {
 	Lat float64 `json:"lat"`
 	Lng float64 `json:"lng"`
 }
@@ -72,7 +72,7 @@ func ParseListing(reader io.Reader) (*Listing, error) {
 	}
 
 	listing := &Listing{
-		Id:          reListingId.FindStringSubmatch(url)[1],
+		ID:          reListingID.FindStringSubmatch(url)[1],
 		URL:         url,
 		Title:       doc.Find("#titletextonly").Text(),
 		Description: parseDescription(doc),
@@ -131,7 +131,7 @@ func parseAttributes(doc *goquery.Document) map[string]string {
 	return attrs
 }
 
-func parseLocation(doc *goquery.Document) *LatLng {
+func parseLocation(doc *goquery.Document) *Location {
 	// Find the geo coordinates if they are available
 	if block := doc.Find("#map").First(); block.Length() > 0 {
 		var lat, lng float64
@@ -140,7 +140,7 @@ func parseLocation(doc *goquery.Document) *LatLng {
 		fmt.Sscanf(block.AttrOr("data-longitude", ""), "%f", &lng)
 
 		if lat != 0 && lng != 0 {
-			return &LatLng{lat, lng}
+			return &Location{lat, lng}
 		}
 	}
 
@@ -184,24 +184,24 @@ func parseImages(doc *goquery.Document) []Image {
 	if thumbs.Length() > 0 {
 		thumbs.Each(func(i int, s *goquery.Selection) {
 			if href, exists := s.Attr("href"); exists {
-				imageId := reImage.FindStringSubmatch(href)[1]
+				imageID := reImage.FindStringSubmatch(href)[1]
 
 				images = append(images, Image{
-					Small:  fmt.Sprintf("https://images.craigslist.org/%s_300x300.jpg", imageId),
-					Medium: fmt.Sprintf("https://images.craigslist.org/%s_600x450.jpg", imageId),
-					Large:  fmt.Sprintf("https://images.craigslist.org/%s_1200x900.jpg", imageId),
+					Small:  fmt.Sprintf("https://images.craigslist.org/%s_300x300.jpg", imageID),
+					Medium: fmt.Sprintf("https://images.craigslist.org/%s_600x450.jpg", imageID),
+					Large:  fmt.Sprintf("https://images.craigslist.org/%s_1200x900.jpg", imageID),
 				})
 			}
 		})
 	} else {
 		src := doc.Find(".slide img").First().AttrOr("src", "")
 		if src != "" {
-			imageId := reImage.FindStringSubmatch(src)[1]
+			imageID := reImage.FindStringSubmatch(src)[1]
 
 			images = append(images, Image{
-				Small:  fmt.Sprintf("https://images.craigslist.org/%s_300x300.jpg", imageId),
-				Medium: fmt.Sprintf("https://images.craigslist.org/%s_600x450.jpg", imageId),
-				Large:  fmt.Sprintf("https://images.craigslist.org/%s_1200x900.jpg", imageId),
+				Small:  fmt.Sprintf("https://images.craigslist.org/%s_300x300.jpg", imageID),
+				Medium: fmt.Sprintf("https://images.craigslist.org/%s_600x450.jpg", imageID),
+				Large:  fmt.Sprintf("https://images.craigslist.org/%s_1200x900.jpg", imageID),
 			})
 		}
 	}
