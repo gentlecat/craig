@@ -57,6 +57,10 @@ func GetListing(url string) (*Listing, error) {
 	}
 	defer resp.Body.Close()
 
+	if resp.StatusCode != http.StatusOK {
+		return nil, errors.New(fmt.Sprintf("Unable to retrieve the listing. Response status %s", resp.Status))
+	}
+
 	return ParseListing(resp.Body)
 }
 
@@ -71,8 +75,13 @@ func ParseListing(reader io.Reader) (*Listing, error) {
 		return nil, errInvalidListing
 	}
 
+	idStrings := reListingID.FindStringSubmatch(url)
+	if len(idStrings) < 1 {
+		return nil, errInvalidListing
+	}
+
 	listing := &Listing{
-		ID:          reListingID.FindStringSubmatch(url)[1],
+		ID:          idStrings[1],
 		URL:         url,
 		Title:       doc.Find("#titletextonly").Text(),
 		Description: parseDescription(doc),
