@@ -16,7 +16,7 @@ require (
 	github.com/ugorji/go v1.1.2-0.20180407103000-f3cacc17c85e // indirect
 	golang.org/x/net v0.0.0-20180420171651-5f9ae10d9af5 // indirect
 	golang.org/x/sync v0.0.0-20200317015054-43a5402ce75a // indirect
-	golang.org/x/sys v0.0.0-20180427151831-cbbc999da32d // indirect
+	golang.org/x/sys v0.1.0 // indirect
 	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
 	gopkg.in/go-playground/validator.v8 v8.18.2 // indirect
 )
