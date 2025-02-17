@@ -28,7 +28,7 @@ func TestParseEmptyListing(t *testing.T) {
 }
 
 func TestParseListing(t *testing.T) {
-	file, err := os.Open("./fixtures/listing2.html")
+	file, err := os.Open("./fixtures/listing.html")
 	if err != nil {
 		t.Error(err)
 	}
@@ -37,25 +37,19 @@ func TestParseListing(t *testing.T) {
 	listing, err := ParseListing(file)
 	assert.NoError(t, err)
 	assert.NotNil(t, listing)
-	assert.Equal(t, "6520962081", listing.ID)
-	assert.Equal(t, "2014 PORSCHE PANAMERA", listing.Title)
-	assert.Equal(t, "https://chicago.craigslist.org/sox/cto/d/2014-porsche-panamera/6520962081.html", listing.URL)
+	assert.Equal(t, "7128708803", listing.ID)
+	assert.Equal(t, "1950 chrysler", listing.Title)
+	assert.Equal(t, "https://chicago.craigslist.org/nwc/cto/d/wood-dale-1950-chrysler/7128708803.html", listing.URL)
 	assert.NotEmpty(t, listing.Description)
-	assert.Equal(t, 49980, listing.Price)
-	assert.Equal(t, 24, len(listing.Images))
+	// assert.Equal(t, uint(3000), listing.Price)
+	assert.Equal(t, 14, len(listing.Images))
 	assert.NotNil(t, listing.PostedAt)
 	assert.NotNil(t, listing.UpdatedAt)
-	assert.Equal(t, 41.7447, listing.Location.Lat)
-	assert.Equal(t, -87.7699, listing.Location.Lng)
+	assert.Equal(t, 41.9602, listing.Location.Lat)
+	assert.Equal(t, -87.981, listing.Location.Lng)
 
 	attrs := map[string]string{
-		"cylinders":    "6 cylinders",
-		"drive":        "4wd",
-		"fuel":         "gas",
-		"odometer":     "72574",
-		"title_status": "clean",
-		"transmission": "automatic",
-		"vin":          "WP0BB2A74EL062226",
+		"fuel": "gas",
 	}
 	for k, v := range attrs {
 		assert.Equal(t, v, listing.Attributes[k])

@@ -108,7 +108,9 @@ func (l *Listing) JSON() (string, error) {
 }
 
 func parseDescription(doc *goquery.Document) string {
+
 	block := doc.Find("#postingbody").First()
+
 	if block.Length() == 0 {
 		return ""
 	}
