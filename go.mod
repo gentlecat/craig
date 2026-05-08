@@ -2,7 +2,7 @@ module go.roman.zone/craig
 
 go 1.25.0
 
-toolchain go1.26.2
+toolchain go1.26.3
 
 require (
 	github.com/PuerkitoBio/goquery v1.10.2
